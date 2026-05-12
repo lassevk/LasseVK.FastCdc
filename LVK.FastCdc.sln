@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LVK.FastCdc", "LVK.FastCdc\LVK.FastCdc.csproj", "{34B5E283-72BD-48F1-BD80-18DF1FECDA3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LVK.FastCdc.Tests", "LVK.FastCdc.Tests\LVK.FastCdc.Tests.csproj", "{A3683E74-9711-4471-87D6-4757483FCD25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34B5E283-72BD-48F1-BD80-18DF1FECDA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B5E283-72BD-48F1-BD80-18DF1FECDA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B5E283-72BD-48F1-BD80-18DF1FECDA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B5E283-72BD-48F1-BD80-18DF1FECDA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3683E74-9711-4471-87D6-4757483FCD25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3683E74-9711-4471-87D6-4757483FCD25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3683E74-9711-4471-87D6-4757483FCD25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3683E74-9711-4471-87D6-4757483FCD25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

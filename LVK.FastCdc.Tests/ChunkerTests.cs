@@ -27,8 +27,10 @@ public class ChunkerTests
     private static IEnumerable<(ChunkingOptions Options, string Name)> OptionsTestCases()
     {
         yield return (new ChunkingOptions(), "default");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_11111111 }, "8-bit mask");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00111111 }, "6-bit mask");
+        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00111111 }, "6-bit hash mask");
+        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_11111111 }, "8-bit hash mask");
+        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00111111_11111111 }, "14-bit hash mask");
+        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_01111111_11111111 }, "15-bit hash mask");
     }
 
     public static IEnumerable<TestCaseData> TestCases()

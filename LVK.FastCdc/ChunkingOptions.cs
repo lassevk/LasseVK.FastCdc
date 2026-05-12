@@ -6,16 +6,6 @@ public record ChunkingOptions
     public int MinimumChunkSize { get; init; } = 1024;
     public int MaximumChunkSize { get; init; } = 128 * 1024;
 
-    public static ulong HashMaskForAverageChunkSize(int sizeInKiloBytes)
-    {
-        if (sizeInKiloBytes is >= 1 and <= 64)
-        {
-            return ((ulong)1 << sizeInKiloBytes) - 1;
-        }
-
-        throw new ArgumentOutOfRangeException(nameof(sizeInKiloBytes), sizeInKiloBytes, "Must be between 1 and 128, inclusive");
-    }
-
     public void Validate()
     {
         if ((HashMask & (HashMask + 1)) != 0 || HashMask == 0)

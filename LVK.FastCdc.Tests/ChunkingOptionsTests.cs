@@ -98,22 +98,4 @@ public class ChunkingOptionsTests
         var options = new ChunkingOptions { MinimumChunkSize = 1024, MaximumChunkSize = 2048 };
         Assert.DoesNotThrow(options.Validate);
     }
-
-    [TestCase(1, 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000001u)]
-    [TestCase(2, 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000011u)]
-    [TestCase(12, 0b00000000_00000000_00000000_00000000_00000000_00000000_00001111_11111111u)]
-    [TestCase(23, 0b00000000_00000000_00000000_00000000_00000000_01111111_11111111_11111111u)]
-    [TestCase(63, 0b01111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111u)]
-    public void HashMaskForAverageChunkSize_WithTestCases(int sizeInKiloBytes, ulong expectedHashMask)
-    {
-        Assert.That(ChunkingOptions.HashMaskForAverageChunkSize(sizeInKiloBytes), Is.EqualTo(expectedHashMask));
-    }
-
-    [TestCase(0)]
-    [TestCase(-1)]
-    [TestCase(65)]
-    public void HashMaskForAverageChunkSize_WithInvalidSize_ThrowsArgumentOutOfRangeException(int sizeInKiloBytes)
-    {
-        Assert.Throws<ArgumentOutOfRangeException>(() => ChunkingOptions.HashMaskForAverageChunkSize(sizeInKiloBytes));
-    }
 }

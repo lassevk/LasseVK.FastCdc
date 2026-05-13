@@ -80,25 +80,30 @@ public static class Chunker
             throw new ArgumentNullException(nameof(data));
         }
 
-        options ??= new();
-        options.Validate();
+        return enumerable();
 
-        int offset = 0;
-        ulong hash = GearHash.EmptyHash;
-        for (int index = 0; index < data.Length; index++)
+        IEnumerable<Chunk> enumerable()
         {
-            hash = GearHash.Append(hash, data[index]);
-            if ((index - offset >= options.MinimumChunkSize && (hash & options.HashMask) == 0) || index - offset >= options.MaximumChunkSize)
+            options ??= new();
+            options.Validate();
+
+            int offset = 0;
+            ulong hash = GearHash.EmptyHash;
+            for (int index = 0; index < data.Length; index++)
             {
-                yield return new Chunk(offset, index - offset);
-                offset = index;
-                hash = GearHash.EmptyHash;
+                hash = GearHash.Append(hash, data[index]);
+                if ((index - offset >= options.MinimumChunkSize && (hash & options.HashMask) == 0) || index - offset >= options.MaximumChunkSize)
+                {
+                    yield return new Chunk(offset, index - offset);
+                    offset = index;
+                    hash = GearHash.EmptyHash;
+                }
             }
-        }
 
-        if (offset < data.Length)
-        {
-            yield return new Chunk(offset, data.Length - offset);
+            if (offset < data.Length)
+            {
+                yield return new Chunk(offset, data.Length - offset);
+            }
         }
     }
 
@@ -127,46 +132,51 @@ public static class Chunker
             throw new ArgumentNullException(nameof(stream));
         }
 
-        options ??= new();
-        options.Validate();
+        return enumerable();
 
-        int offset = 0;
-        stream.Position = 0;
-        ulong hash = GearHash.EmptyHash;
-
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(32768);
-        try
+        IEnumerable<Chunk> enumerable()
         {
-            int inBuffer;
-            int bufferOffset = 0;
-            while ((inBuffer = stream.Read(buffer)) > 0)
+            options ??= new();
+            options.Validate();
+
+            int offset = 0;
+            stream.Position = 0;
+            ulong hash = GearHash.EmptyHash;
+
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(32768);
+            try
             {
-                for (int index = 0; index < inBuffer; index++)
+                int inBuffer;
+                int bufferOffset = 0;
+                while ((inBuffer = stream.Read(buffer)) > 0)
                 {
-                    hash = GearHash.Append(hash, buffer[index]);
-
-                    int streamIndex = bufferOffset + index;
-
-                    if ((streamIndex - offset >= options.MinimumChunkSize && (hash & options.HashMask) == 0) || streamIndex - offset >= options.MaximumChunkSize)
+                    for (int index = 0; index < inBuffer; index++)
                     {
-                        yield return new Chunk(offset, streamIndex - offset);
-                        offset = streamIndex;
-                        hash = GearHash.EmptyHash;
+                        hash = GearHash.Append(hash, buffer[index]);
+
+                        int streamIndex = bufferOffset + index;
+
+                        if ((streamIndex - offset >= options.MinimumChunkSize && (hash & options.HashMask) == 0) || streamIndex - offset >= options.MaximumChunkSize)
+                        {
+                            yield return new Chunk(offset, streamIndex - offset);
+                            offset = streamIndex;
+                            hash = GearHash.EmptyHash;
+                        }
                     }
+
+                    bufferOffset += inBuffer;
+
                 }
 
-                bufferOffset += inBuffer;
-
+                if (offset < stream.Length)
+                {
+                    yield return new Chunk(offset, (int)(stream.Length - offset));
+                }
             }
-
-            if (offset < stream.Length)
+            finally
             {
-                yield return new Chunk(offset, (int)(stream.Length - offset));
+                ArrayPool<byte>.Shared.Return(buffer);
             }
-        }
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 }

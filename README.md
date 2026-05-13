@@ -13,3 +13,31 @@ dotnet add package LasseVK.FastCdc
 
 Or you can use your favorite IDE which should have a Nuget package manager built in.
 
+## Framework support
+
+The package supports the following .NET versions and standards:
+
+* .NET 8.0 (until november 10, 2026)
+* .NET 9.0 (until november 10, 2026)
+* .NET 10.0 (until november 14, 2028)
+
+This follows the official supported versions policies from Microsoft:
+
+* [The official .NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy)
+
+# Usage
+
+You provide one of the following types of datasets to the `Chunker.Chunk` methods:
+
+* `ReadOnlySpan<byte>`
+* `byte[]`
+* `Stream` (or one of its descendants)
+
+In return, you get a collection of `Chunk` records, each specifying the
+offset and length of the chunk.
+
+Optionally you can provide a `ChunkingOptions` options object, specifying how the chunking algorithm should
+operate. Specifically the options allows you to control the average, minimum and maximum chunk size.
+
+```csharp
+```

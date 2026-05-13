@@ -23,13 +23,13 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>TRACE;DEBUG</DefineConstants>
-        <DocumentationFile>bin\Debug\net10.0\LVK.FastCdc.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net10.0\LasseVK.FastCdc.xml</DocumentationFile>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <TreatSpecificWarningsAsErrors />
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\net10.0\LVK.FastCdc.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net10.0\LasseVK.FastCdc.xml</DocumentationFile>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <TreatSpecificWarningsAsErrors />
     </PropertyGroup>

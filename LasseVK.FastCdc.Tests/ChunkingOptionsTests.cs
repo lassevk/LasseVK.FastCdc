@@ -91,4 +91,31 @@ public class ChunkingOptionsTests
         var options = new ChunkingOptions { MinimumChunkSize = 1024, MaximumChunkSize = 2048 };
         Assert.DoesNotThrow(options.Validate);
     }
+
+    [Test]
+    public void Chunk_StabilityTest()
+    {
+        // This will used as a canary to detect changes in the algorithm that impacts chunk cutting and cut point detection.
+
+        byte[] bytes = new byte[128 * 1024];
+        new Random(12345).NextBytes(bytes);
+
+        var chunks = Chunker.Chunk(bytes, new ChunkingOptions()).ToList();
+
+        int[] expectedChunkLengths =
+        [
+            1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1877, 4205, 1281, 1258, 3266, 3652, 1108, 1027, 6661, 1216, 1041, 1055, 1663, 10439, 1680, 1435, 8019, 1550
+          , 2676, 6711, 11088, 2096, 5245, 4539, 5187, 2295, 1351, 6068, 314,
+        ];
+
+        int offset = 0;
+        var expectedChunks = new List<Chunk>();
+        foreach (int length in expectedChunkLengths)
+        {
+            expectedChunks.Add(new Chunk(offset, length));
+            offset += length;
+        }
+
+        Assert.That(chunks, Is.EqualTo(expectedChunks).AsCollection);
+    }
 }

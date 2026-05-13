@@ -133,22 +133,32 @@ public class ChunkerTests
         yield return new TestCaseData(PseudoRandomBytes(12345, 128 * 1024), (int[])[
             1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1877, 4205, 1281, 1258, 3266, 3652, 1108, 1027, 6661, 1216, 1041, 1055, 1663, 10439, 1680, 1435, 8019, 1550
           , 2676, 6711, 11088, 2096, 5245, 4539, 5187, 2295, 1351, 6068, 314,
-        ]).SetName("128k pseudo-random 12345");
+        ], new ChunkingOptions()).SetName("128k pseudo-random 12345");
 
         yield return new TestCaseData(PseudoRandomBytes(12345), (int[])[
             1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1699,
-        ]).SetName("32k pseudo-random 12345");
+        ], new ChunkingOptions()).SetName("32k pseudo-random 12345");
 
         yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024), (int[])[
             1362, 4278, 2290, 2154, 2797, 3427, 2492, 2800, 2798, 2678, 1608, 5015, 2723, 8095, 1401, 3963, 1105, 1332, 7152, 5630, 436,
-        ]).SetName("64k pseudo-random 1234567890");
+        ], new ChunkingOptions()).SetName("64k pseudo-random 1234567890");
+
+        yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024)
+          , (int[])
+            [
+                1362, 1383, 1696, 1039, 1121, 1111, 1404, 1253, 1390, 1036, 1166, 1334, 1041, 1131, 1093, 1198, 1680, 1209, 1665, 1094, 1670, 1150, 1175, 1588, 1268, 1097, 2893, 1343, 1212, 1165, 1408
+              , 1492, 1406, 1500, 1267, 1695, 1031, 1025, 1127, 1106, 1294, 1327, 2245, 1492, 1059, 1643, 1154, 1315, 983,
+            ], new ChunkingOptions
+            {
+                HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_11111111,
+            }).SetName("64k pseudo-random 1234567890 with non-default options");
     }
 
     [TestCaseSource(nameof(StabilityTestCases))]
-    public void Chunk_StabilityTest(byte[] bytes, int[] expectedChunkLengths)
+    public void Chunk_StabilityTest(byte[] bytes, int[] expectedChunkLengths, ChunkingOptions options)
     {
         // This will used as a canary to detect changes in the algorithm that impacts chunk cutting and cut point detection.
-        var chunks = Chunker.Chunk(bytes, new ChunkingOptions()).ToList();
+        var chunks = Chunker.Chunk(bytes, options).ToList();
 
         int offset = 0;
         var expectedChunks = new List<Chunk>();

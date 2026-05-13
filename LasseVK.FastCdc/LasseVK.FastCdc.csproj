@@ -46,8 +46,8 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
-        <None Include="..\..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)"/>
-        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+        <None Include="..\README.md" Pack="true" PackagePath="$(PackageReadmeFile)"/>
+        <None Include="..\LICENSE.md" Pack="true" PackagePath="$(PackageLicenseFile)"/>
     </ItemGroup>
 
 </Project>

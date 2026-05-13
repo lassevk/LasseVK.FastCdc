@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>LVK.FastCdc.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LVK.FastCdc\LVK.FastCdc.csproj" />
+      <ProjectReference Include="..\LasseVK.FastCdc\LasseVK.FastCdc.csproj" />
     </ItemGroup>
 
 </Project>

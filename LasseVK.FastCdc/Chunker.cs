@@ -65,7 +65,7 @@ public static class Chunker
     /// Optional <see cref="ChunkingOptions"/> to use.
     /// </param>
     /// <returns>
-    /// An enumerable of <see cref="LVK.FastCdc.Chunk"/>s.
+    /// An enumerable of <see cref="LasseVK.FastCdc.Chunk"/>s.
     /// </returns>
     /// <exception cref="ArgumentException">
     /// <paramref name="options"/> is invalid. See <see cref="ChunkingOptions.Validate"/> for details.
@@ -112,7 +112,7 @@ public static class Chunker
     /// Optional <see cref="ChunkingOptions"/> to use.
     /// </param>
     /// <returns>
-    /// An enumerable of <see cref="LVK.FastCdc.Chunk"/>s.
+    /// An enumerable of <see cref="LasseVK.FastCdc.Chunk"/>s.
     /// </returns>
     /// <exception cref="ArgumentException">
     /// <paramref name="options"/> is invalid. See <see cref="ChunkingOptions.Validate"/> for details.

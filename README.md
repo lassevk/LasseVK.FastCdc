@@ -3,6 +3,9 @@
 This package implements the [FastCdc](https://www.usenix.org/conference/atc16/technical-sessions/presentation/xia)
 algorithm for efficient chunking of large datasets.
 
+***Note:*** Portions of this library were added by AI, given that I have an IDE that uses AI-style autocompletion.
+There is *however*, no portion of it not vetted by me.
+
 ## Installation
 
 You can install the package from the command line, using `dotnet`:

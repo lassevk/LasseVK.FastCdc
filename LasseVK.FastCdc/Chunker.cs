@@ -1,6 +1,6 @@
 using System.Buffers;
 
-namespace LVK.FastCdc;
+namespace LasseVK.FastCdc;
 
 /// <summary>
 /// Implements FastCdc chunking algorithm.

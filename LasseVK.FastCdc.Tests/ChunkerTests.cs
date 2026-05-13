@@ -1,4 +1,4 @@
-namespace LVK.FastCdc.Tests;
+namespace LasseVK.FastCdc.Tests;
 
 public class ChunkerTests
 {

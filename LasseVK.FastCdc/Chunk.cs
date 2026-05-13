@@ -1,4 +1,4 @@
-namespace LVK.FastCdc;
+namespace LasseVK.FastCdc;
 
 #if NET8_0_OR_GREATER
 /// <summary>

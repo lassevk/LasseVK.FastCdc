@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace LVK.FastCdc;
+namespace LasseVK.FastCdc;
 
 /// <summary>
 /// Implements GearHashing algorithm.

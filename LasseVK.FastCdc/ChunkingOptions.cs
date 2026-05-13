@@ -1,4 +1,4 @@
-namespace LVK.FastCdc;
+namespace LasseVK.FastCdc;
 
 /// <summary>
 /// Used to provide options to <see cref="Chunker"/>.

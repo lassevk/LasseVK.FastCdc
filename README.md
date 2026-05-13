@@ -1,5 +1,8 @@
 # LVK.FastCdc
 
+[![build](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/build.yml/badge.svg)](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/build.yml)
+[![codeql](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/github-code-scanning/codeql)
+
 This package implements the [FastCdc](https://www.usenix.org/conference/atc16/technical-sessions/presentation/xia)
 algorithm for efficient chunking of large datasets.
 

@@ -19,6 +19,7 @@
         <Nullable>enable</Nullable>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

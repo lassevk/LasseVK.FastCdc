@@ -80,13 +80,13 @@ public static class Chunker
             throw new ArgumentNullException(nameof(data));
         }
 
+        options ??= new();
+        options.Validate();
+
         return enumerable();
 
         IEnumerable<Chunk> enumerable()
         {
-            options ??= new();
-            options.Validate();
-
             int offset = 0;
             ulong hash = GearHash.EmptyHash;
             for (int index = 0; index < data.Length; index++)
@@ -132,13 +132,13 @@ public static class Chunker
             throw new ArgumentNullException(nameof(stream));
         }
 
+        options ??= new();
+        options.Validate();
+
         return enumerable();
 
         IEnumerable<Chunk> enumerable()
         {
-            options ??= new();
-            options.Validate();
-
             int offset = 0;
             stream.Position = 0;
             ulong hash = GearHash.EmptyHash;

@@ -17,6 +17,7 @@ public class ChunkerTests
         {
             bytes2[index] = (byte)index;
         }
+
         yield return (bytes2, "32k all bytes");
 
         yield return (PseudoRandomBytes(12345), "32k pseudo-random 12345");
@@ -29,10 +30,25 @@ public class ChunkerTests
     private static IEnumerable<(ChunkingOptions Options, string Name)> OptionsTestCases()
     {
         yield return (new ChunkingOptions(), "default");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00111111 }, "6-bit hash mask");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_11111111 }, "8-bit hash mask");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00111111_11111111 }, "14-bit hash mask");
-        yield return (new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_01111111_11111111 }, "15-bit hash mask");
+        yield return (new ChunkingOptions
+        {
+            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00111111
+        }, "6-bit hash mask");
+
+        yield return (new ChunkingOptions
+        {
+            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_11111111
+        }, "8-bit hash mask");
+
+        yield return (new ChunkingOptions
+        {
+            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00111111_11111111
+        }, "14-bit hash mask");
+
+        yield return (new ChunkingOptions
+        {
+            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_01111111_11111111
+        }, "15-bit hash mask");
     }
 
     public static IEnumerable<TestCaseData> TestCases()
@@ -130,18 +146,19 @@ public class ChunkerTests
 
     private static IEnumerable<TestCaseData> StabilityTestCases()
     {
-        yield return new TestCaseData(PseudoRandomBytes(12345, 128 * 1024), (int[])[
-            1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1877, 4205, 1281, 1258, 3266, 3652, 1108, 1027, 6661, 1216, 1041, 1055, 1663, 10439, 1680, 1435, 8019, 1550
-          , 2676, 6711, 11088, 2096, 5245, 4539, 5187, 2295, 1351, 6068, 314,
-        ], new ChunkingOptions()).SetName("128k pseudo-random 12345");
+        yield return new TestCaseData(PseudoRandomBytes(12345, 128 * 1024)
+          , (int[])
+            [
+                1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1877, 4205, 1281, 1258, 3266, 3652, 1108, 1027, 6661, 1216, 1041, 1055, 1663, 10439, 1680, 1435, 8019, 1550
+              , 2676, 6711, 11088, 2096, 5245, 4539, 5187, 2295, 1351, 6068, 314,
+            ], new ChunkingOptions()).SetName("128k pseudo-random 12345");
 
-        yield return new TestCaseData(PseudoRandomBytes(12345), (int[])[
-            1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1699,
-        ], new ChunkingOptions()).SetName("32k pseudo-random 12345");
+        yield return new TestCaseData(PseudoRandomBytes(12345), (int[])[1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1699,], new ChunkingOptions()).SetName(
+            "32k pseudo-random 12345");
 
-        yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024), (int[])[
-            1362, 4278, 2290, 2154, 2797, 3427, 2492, 2800, 2798, 2678, 1608, 5015, 2723, 8095, 1401, 3963, 1105, 1332, 7152, 5630, 436,
-        ], new ChunkingOptions()).SetName("64k pseudo-random 1234567890");
+        yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024)
+          , (int[])[1362, 4278, 2290, 2154, 2797, 3427, 2492, 2800, 2798, 2678, 1608, 5015, 2723, 8095, 1401, 3963, 1105, 1332, 7152, 5630, 436,]
+          , new ChunkingOptions()).SetName("64k pseudo-random 1234567890");
 
         yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024)
           , (int[])
@@ -187,5 +204,44 @@ public class ChunkerTests
     public void Chunk_NullByteArray_ThrowsArgumentNullException()
     {
         Assert.Throws<ArgumentNullException>(() => Chunker.Chunk((byte[])null!));
+    }
+
+    [Test]
+    public void Chunk_ForReadOnlySpanWithInvalidOptions_ThrowsArgumentException()
+    {
+        var options = new ChunkingOptions
+        {
+            MinimumChunkSize = 16,
+        };
+
+        Assert.Throws<ArgumentException>(() =>
+        {
+            ReadOnlySpan<byte> data = new byte[1024];
+            Chunker.Chunk(data, _ =>
+            {
+            }, options);
+        });
+    }
+
+    [Test]
+    public void Chunk_ForByteArrayWithInvalidOptionsButEnumeratorIsNotEnumerated_ThrowsArgumentException()
+    {
+        var options = new ChunkingOptions
+        {
+            MinimumChunkSize = 16,
+        };
+
+        Assert.Throws<ArgumentException>(() => Chunker.Chunk(new byte[1024], options));
+    }
+
+    [Test]
+    public void Chunk_ForStreamWithInvalidOptionsButEnumeratorIsNotEnumerated_ThrowsArgumentException()
+    {
+        var options = new ChunkingOptions
+        {
+            MinimumChunkSize = 16,
+        };
+
+        Assert.Throws<ArgumentException>(() => Chunker.Chunk(new MemoryStream(new byte[1024]), options));
     }
 }

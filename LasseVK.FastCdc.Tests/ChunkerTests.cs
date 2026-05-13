@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+
 namespace LasseVK.FastCdc.Tests;
 
 public class ChunkerTests
@@ -124,5 +126,38 @@ public class ChunkerTests
         var chunks2 = Chunker.Chunk([123, ..data], options).ToList();
 
         Assert.That(chunks1.Skip(1).Select(c => c.Length), Is.EqualTo(chunks2.Skip(1).Select(c => c.Length)).AsCollection);
+    }
+
+    private static IEnumerable<TestCaseData> StabilityTestCases()
+    {
+        yield return new TestCaseData(PseudoRandomBytes(12345, 128 * 1024), (int[])[
+            1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1877, 4205, 1281, 1258, 3266, 3652, 1108, 1027, 6661, 1216, 1041, 1055, 1663, 10439, 1680, 1435, 8019, 1550
+          , 2676, 6711, 11088, 2096, 5245, 4539, 5187, 2295, 1351, 6068, 314,
+        ]).SetName("128k pseudo-random 12345");
+
+        yield return new TestCaseData(PseudoRandomBytes(12345), (int[])[
+            1365, 3584, 1438, 1673, 1232, 1061, 1072, 2167, 3218, 1616, 5591, 7052, 1699,
+        ]).SetName("32k pseudo-random 12345");
+
+        yield return new TestCaseData(PseudoRandomBytes(1234567890, 64 * 1024), (int[])[
+            1362, 4278, 2290, 2154, 2797, 3427, 2492, 2800, 2798, 2678, 1608, 5015, 2723, 8095, 1401, 3963, 1105, 1332, 7152, 5630, 436,
+        ]).SetName("64k pseudo-random 1234567890");
+    }
+
+    [TestCaseSource(nameof(StabilityTestCases))]
+    public void Chunk_StabilityTest(byte[] bytes, int[] expectedChunkLengths)
+    {
+        // This will used as a canary to detect changes in the algorithm that impacts chunk cutting and cut point detection.
+        var chunks = Chunker.Chunk(bytes, new ChunkingOptions()).ToList();
+
+        int offset = 0;
+        var expectedChunks = new List<Chunk>();
+        foreach (int length in expectedChunkLengths)
+        {
+            expectedChunks.Add(new Chunk(offset, length));
+            offset += length;
+        }
+
+        Assert.That(chunks, Is.EqualTo(expectedChunks).AsCollection);
     }
 }

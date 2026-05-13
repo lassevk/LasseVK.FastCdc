@@ -28,6 +28,9 @@ This follows the official supported versions policies from Microsoft:
 
 * [The official .NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy)
 
+*Note:* After support for a .NET version ends, the package will still exist on nuget for use with
+that version, but I won't guarantee that updates to that version will be made.
+
 # Usage
 
 You provide one of the following types of datasets to the `Chunker.Chunk` methods:

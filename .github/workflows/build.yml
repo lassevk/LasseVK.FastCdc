@@ -3,6 +3,9 @@ name: Build and run tests
 on:
   push
 
+permissions:
+  contents: read
+
 env:
   DOTNET_SDK_VERSION: '10.0.x'
   DOTNET_TFM: 'net10.0'

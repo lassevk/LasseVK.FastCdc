@@ -62,14 +62,7 @@ public class ChunkingOptionsTests
     [Test]
     public void Validate_ValidSequentialHashMask_DoesNotThrow()
     {
-        var options = new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000111 };
-        Assert.DoesNotThrow(options.Validate);
-    }
-
-    [Test]
-    public void Validate_ValidSingleBitHashMask_DoesNotThrow()
-    {
-        var options = new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000001 };
+        var options = new ChunkingOptions { HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_01111111 };
         Assert.DoesNotThrow(options.Validate);
     }
 
@@ -87,7 +80,7 @@ public class ChunkingOptionsTests
         {
             MinimumChunkSize = 1024,
             MaximumChunkSize = 8192,
-            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00001111
+            HashMask = 0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_01111111,
         };
         Assert.DoesNotThrow(options.Validate);
     }

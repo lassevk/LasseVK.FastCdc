@@ -25,7 +25,7 @@ Or you can use your favorite IDE which should have a Nuget package manager built
 
 ## Framework support
 
-The package supports the following .NET versions and standards:
+The package supports the following .NET versions:
 
 * .NET 8.0 (until november 10, 2026)
 * .NET 9.0 (until november 10, 2026)

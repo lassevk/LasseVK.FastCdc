@@ -1,4 +1,4 @@
-# LVK.FastCdc
+# LasseVK.FastCdc
 
 [![build](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/build.yml/badge.svg)](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/build.yml)
 [![codeql](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/lassevk/LasseVK.FastCdc/actions/workflows/github-code-scanning/codeql)

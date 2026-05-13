@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LasseVK.FastCdc.Tests/LasseVK.FastCdc.Tests.csproj" />
+  <Project Path="LasseVK.FastCdc/LasseVK.FastCdc.csproj" />
+</Solution>

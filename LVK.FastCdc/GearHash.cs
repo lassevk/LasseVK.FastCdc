@@ -2,6 +2,9 @@ using System.Runtime.CompilerServices;
 
 namespace LVK.FastCdc;
 
+/// <summary>
+/// Implements GearHashing algorithm.
+/// </summary>
 public static class GearHash
 {
     // From: Ddelta: A deduplication-inspired fast delta compression approach
@@ -39,19 +42,23 @@ public static class GearHash
       , 0x18f346f7abc9d394, 0x636dc655d61ad33d, 0xcc8bab4939f7f3f6, 0x63c7a906c1dd187b,
     ];
 
+    /// <summary>
+    /// The initial hash value to start a gear hash with.
+    /// </summary>
     public const ulong EmptyHash = 0;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong Append(ulong hash, ReadOnlySpan<byte> data)
-    {
-        foreach (byte value in data)
-        {
-            hash = unchecked((hash << 1) + _hashTable[value]);
-        }
-
-        return hash;
-    }
-
+    /// <summary>
+    /// Append a byte to the hash, returning the new hash.
+    /// </summary>
+    /// <param name="hash">
+    /// The hash to append to, calculated from previous bytes.
+    /// </param>
+    /// <param name="value">
+    /// The byte to append to the hash.
+    /// </param>
+    /// <returns>
+    /// The modified hash value.
+    /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ulong Append(ulong hash, byte value) => unchecked((hash << 1) + _hashTable[value]);
 }

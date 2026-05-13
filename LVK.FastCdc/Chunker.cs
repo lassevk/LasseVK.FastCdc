@@ -2,10 +2,37 @@ using System.Buffers;
 
 namespace LVK.FastCdc;
 
+/// <summary>
+/// Implements FastCdc chunking algorithm.
+/// </summary>
 public static class Chunker
 {
+    /// <summary>
+    /// Calculates the chunks from a ReadOnlySpan of bytes. Due to ReadOnlySpan preventing an enumerator from being generated,
+    /// this overload instead uses a callback to process each chunk.
+    /// </summary>
+    /// <param name="data">
+    /// The dataset to chunk.
+    /// </param>
+    /// <param name="processChunk">
+    /// The callback that will be invoked for each chunk.
+    /// </param>
+    /// <param name="options">
+    /// Optional <see cref="ChunkingOptions"/> to use.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="options"/> is invalid. See <see cref="ChunkingOptions.Validate"/> for details.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="processChunk"/> is null.
+    /// </exception>
     public static void Chunk(ReadOnlySpan<byte> data, Action<Chunk> processChunk, ChunkingOptions? options = null)
     {
+        if (processChunk is null)
+        {
+            throw new ArgumentNullException(nameof(processChunk));
+        }
+
         options ??= new();
         options.Validate();
 
@@ -28,8 +55,31 @@ public static class Chunker
         }
     }
 
+    /// <summary>
+    /// Calculates the chunks from a byte array
+    /// </summary>
+    /// <param name="data">
+    /// The dataset to chunk.
+    /// </param>
+    /// <param name="options">
+    /// Optional <see cref="ChunkingOptions"/> to use.
+    /// </param>
+    /// <returns>
+    /// An enumerable of <see cref="LVK.FastCdc.Chunk"/>s.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="options"/> is invalid. See <see cref="ChunkingOptions.Validate"/> for details.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="data"/> is null.
+    /// </exception>
     public static IEnumerable<Chunk> Chunk(byte[] data, ChunkingOptions? options = null)
     {
+        if (data is null)
+        {
+            throw new ArgumentNullException(nameof(data));
+        }
+
         options ??= new();
         options.Validate();
 
@@ -52,8 +102,31 @@ public static class Chunker
         }
     }
 
+    /// <summary>
+    /// Calculates the chunks from a stream
+    /// </summary>
+    /// <param name="stream">
+    /// The dataset to chunk.
+    /// </param>
+    /// <param name="options">
+    /// Optional <see cref="ChunkingOptions"/> to use.
+    /// </param>
+    /// <returns>
+    /// An enumerable of <see cref="LVK.FastCdc.Chunk"/>s.
+    /// </returns>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="options"/> is invalid. See <see cref="ChunkingOptions.Validate"/> for details.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="stream"/> is null.
+    /// </exception>
     public static IEnumerable<Chunk> Chunk(Stream stream, ChunkingOptions? options = null)
     {
+        if (stream is null)
+        {
+            throw new ArgumentNullException(nameof(stream));
+        }
+
         options ??= new();
         options.Validate();
 

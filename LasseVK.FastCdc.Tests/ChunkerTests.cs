@@ -170,4 +170,22 @@ public class ChunkerTests
 
         Assert.That(chunks, Is.EqualTo(expectedChunks).AsCollection);
     }
+
+    [Test]
+    public void Chunk_NullAction_ThrowsArgumentNullException()
+    {
+        Assert.Throws<ArgumentNullException>(() => Chunker.Chunk(new byte[1024], (Action<Chunk>)null!));
+    }
+
+    [Test]
+    public void Chunk_NullStream_ThrowsArgumentNullException()
+    {
+        Assert.Throws<ArgumentNullException>(() => Chunker.Chunk((Stream)null!));
+    }
+
+    [Test]
+    public void Chunk_NullByteArray_ThrowsArgumentNullException()
+    {
+        Assert.Throws<ArgumentNullException>(() => Chunker.Chunk((byte[])null!));
+    }
 }

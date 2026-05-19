@@ -57,4 +57,23 @@ Optionally you can provide a `ChunkingOptions` options object, specifying how th
 operate. Specifically the options allows you to control the average, minimum and maximum chunk size.
 
 ```csharp
+var bytes = File.ReadAllBytes("path/to/file");
+var chunks = Chunker.Chunk(bytes).ToList();
+
+foreach (var chunk in chunks)
+{
+    var bytesOfChunk = bytes[chunk.Offset..(chunk.Offset + chunk.Length)];
+    // TODO: Process chunk data
+}
+```
+
+The above example works for files that can be loaded into memory. For larger files, consider using a `Stream`
+instead of `byte[]` to avoid loading the entire file into memory at once, like this:
+
+```csharp
+using var stream = File.OpenRead("path/to/file");
+foreach (var chunk in Chunker.Chunk(bytes))
+{
+    var bytesOfChunk = ... // TODO: Read bytes and process them
+}
 ```

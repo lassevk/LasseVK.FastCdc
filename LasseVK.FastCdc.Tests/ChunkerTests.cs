@@ -244,4 +244,25 @@ public class ChunkerTests
 
         Assert.Throws<ArgumentException>(() => Chunker.Chunk(new MemoryStream(new byte[1024]), options));
     }
+
+    [Test]
+    public void Chunk_ForStreamWhenCodeEnumeratingChunksRepositionsStream_EnsuresStreamContinuesFromCorrectPositionWhenEnumeratorContinues()
+    {
+        var stream = new MemoryStream(PseudoRandomBytes(12345, 128 * 1024));
+        var chunksWithNoInterference = Chunker.Chunk(stream, new ChunkingOptions()).ToList();
+
+        var chunksWithInterference = new List<Chunk>();
+        foreach (Chunk chunk in Chunker.Chunk(stream, new ChunkingOptions()))
+        {
+            stream.Position = 0;
+            chunksWithInterference.Add(chunk);
+
+            if (chunksWithInterference.Count > chunksWithNoInterference.Count)
+            {
+                break;
+            }
+        }
+
+        Assert.That(chunksWithInterference, Is.EqualTo(chunksWithNoInterference).AsCollection);
+    }
 }

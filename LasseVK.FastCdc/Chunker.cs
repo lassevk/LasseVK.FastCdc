@@ -158,7 +158,14 @@ public static class Chunker
 
                         if ((streamIndex - offset >= options.MinimumChunkSize && (hash & options.HashMask) == 0) || streamIndex - offset >= options.MaximumChunkSize)
                         {
+                            long currentPosition = stream.Position;
                             yield return new Chunk(offset, streamIndex - offset);
+
+                            if (stream.Position != currentPosition)
+                            {
+                                stream.Position = currentPosition;
+                            }
+
                             offset = streamIndex;
                             hash = GearHash.EmptyHash;
                         }
